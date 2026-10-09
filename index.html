@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTTU KADE | Sri Lanka's Molten Cheese Kottu Experience</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#F59E0B',
+                            amber: '#FBBF24',
+                            darkGold: '#D97706',
+                            red: '#EF4444',
+                            darkBg: '#0b0b0f',
+                            cardBg: '#13131c',
+                            borderBg: '#232332'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Bebas Neue', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- GSAP for Smooth Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0b0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(19, 19, 28, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.12);
+        }
+        
+        .glass-nav {
+            background: rgba(11, 11, 15, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Cheese Melt Glow Pulse */
+        @keyframes cheesePulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.25), inset 0 0 10px rgba(245, 158, 11, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.25);
+            }
+        }
+
+        .cheese-glow {
+            animation: cheesePulse 3.5s infinite ease-in-out;
+        }
+
+        /* Flame flicker background gradient */
+        .flame-bg {
+            background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.15) 0%, rgba(239, 68, 68, 0.05) 45%, rgba(11, 11, 15, 1) 80%);
+        }
+
+        /* Sizzle sound playing indicator pulse */
+        @keyframes soundWave {
+            0%, 100% { height: 6px; }
+            50% { height: 22px; }
+        }
+        .bar-1 { animation: soundWave 0.5s infinite ease-in-out; }
+        .bar-2 { animation: soundWave 0.7s infinite ease-in-out 0.1s; }
+        .bar-3 { animation: soundWave 0.4s infinite ease-in-out 0.2s; }
+    </style>
+</head>
+
+<body class="bg-brand-darkBg text-gray-100 font-sans selection:bg-brand-gold selection:text-black overflow-x-hidden">
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-black font-display text-2xl tracking-wider shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
+                    KK
+                </div>
+                <div>
+                    <span class="font-display text-3xl tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-500 block leading-none">
+                        KOTTU KADE
+                    </span>
+                    <span class="text-[10px] text-amber-400/80 tracking-widest uppercase font-semibold">Molten Cheese Bar</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#menu" class="text-sm font-medium hover:text-amber-400 transition-colors flex items-center gap-2">
+                    <i class="fa-solid font-xs text-amber-500 fa-utensils"></i> Menu
+                </a>
+                <a href="#about" class="text-sm font-medium hover:text-amber-400 transition-colors flex items-center gap-2">
+                    <i class="fa-solid font-xs text-amber-500 fa-fire"></i> Our Craft
+                </a>
+                <a href="#reviews" class="text-sm font-medium hover:text-amber-400 transition-colors flex items-center gap-2">
+                    <i class="fa-solid font-xs text-amber-500 fa-star"></i> Reviews
+                </a>
+                <a href="#location" class="text-sm font-medium hover:text-amber-400 transition-colors flex items-center gap-2">
+                    <i class="fa-solid font-xs text-amber-500 fa-location-dot"></i> Visit Us
+                </a>
+            </nav>
+
+            <!-- Action Controls & Cart Button -->
+            <div class="flex items-center gap-4">
+                <!-- Status Badge -->
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    Sizzling Hot Now
+                </div>
+
+                <!-- Shopping Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold px-4 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-amber-500/20 active:scale-95">
+                    <i class="fa-solid fa-utensils-slash text-base hidden"></i>
+                    <i class="fa-solid fa-basket-shopping text-base"></i>
+                    <span class="hidden sm:inline">My Order</span>
+                    <span id="cartBadgeCount" class="bg-black text-amber-400 text-xs w-5 h-5 rounded-full flex items-center justify-center font-extrabold ml-1">0</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl" id="mobileMenuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Modal -->
+        <div id="mobileMenu" class="hidden md:hidden bg-brand-darkBg/95 border-b border-gray-800 px-6 py-6 space-y-4">
+            <a href="#menu" onclick="toggleMobileMenu()" class="block text-lg font-medium text-gray-200 hover:text-amber-400"><i class="fa-solid fa-utensils text-amber-500 mr-3"></i> Menu</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-lg font-medium text-gray-200 hover:text-amber-400"><i class="fa-solid fa-fire text-amber-500 mr-3"></i> Our Craft</a>
+            <a href="#reviews" onclick="toggleMobileMenu()" class="block text-lg font-medium text-gray-200 hover:text-amber-400"><i class="fa-solid fa-star text-amber-500 mr-3"></i> Reviews</a>
+            <a href="#location" onclick="toggleMobileMenu()" class="block text-lg font-medium text-gray-200 hover:text-amber-400"><i class="fa-solid fa-location-dot text-amber-500 mr-3"></i> Visit Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen pt-28 pb-16 flex items-center flame-bg overflow-hidden">
+        <!-- Canvas for floating fire sparks -->
+        <canvas id="sparksCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Hero Column -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left" id="heroTextContainer">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                        <span>🇱🇰 SRI LANKA'S PREMIER KOTTU BAR</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                        <span class="text-amber-200">100% MOZZARELLA BLISS</span>
+                    </div>
+
+                    <h1 class="text-5xl sm:text-6xl xl:text-7xl font-display tracking-tight text-white leading-none">
+                        HOT OFF THE GRID.<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500">
+                            DROWNED IN CHEESE.
+                        </span>
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Welcome to <strong class="text-amber-400 font-semibold">KOTTU KADE</strong>. We don't do standard street food — we craft three perfected, sizzled signature Kottus loaded with roasted spices, handmade rotis, and molten Sri Lankan cheddar-mozzarella pull.
+                    </p>
+
+                    <!-- Interactive Sizzle Audio Button & CTA -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-lg tracking-wider shadow-xl shadow-amber-500/25 transition-all duration-300 text-center transform hover:-translate-y-1">
+                            EXPLORE THE TRIO <i class="fa-solid fa-arrow-down ml-2"></i>
+                        </a>
+
+                        <!-- Web Audio API Sizzle Sound Trigger -->
+                        <button id="sizzleSoundBtn" onclick="toggleSizzleAudio()" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-card hover:bg-gray-800/80 border border-amber-500/30 text-amber-300 font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-3 group">
+                            <div class="flex items-center gap-1 h-5" id="soundWaveIcon">
+                                <span class="w-1 bg-amber-400 rounded-full h-2"></span>
+                                <span class="w-1 bg-amber-400 rounded-full h-4"></span>
+                                <span class="w-1 bg-amber-400 rounded-full h-2"></span>
+                            </div>
+                            <span id="soundBtnText">Hear The Chopping Sound 🔊</span>
+                        </button>
+                    </div>
+
+                    <!-- Trust Stats Grid -->
+                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-gray-800/80 text-center lg:text-left">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display text-amber-400">100%</div>
+                            <div class="text-xs text-gray-400 mt-1">Real Mozzarella</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display text-amber-400">Daily Fresh</div>
+                            <div class="text-xs text-gray-400 mt-1">Handmade Roti</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display text-amber-400">4.9 ★</div>
+                            <div class="text-xs text-gray-400 mt-1">50,000+ Sizzles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Visual Showcase Card -->
+                <div class="lg:col-span-5 relative" id="heroImageCard">
+                    <!-- Rotating backdrop glow -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 to-red-600 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+                    
+                    <div class="relative glass-card rounded-3xl p-6 border border-amber-500/30 cheese-glow overflow-hidden">
+                        <div class="relative h-80 sm:h-96 rounded-2xl overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1000&auto=format&fit=crop" 
+                                 alt="Cheese Chicken Kottu" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            
+                            <div class="absolute top-4 right-4 bg-red-600 text-white font-bold text-xs uppercase px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5">
+                                <i class="fa-solid fa-fire"></i> Best Seller
+                            </div>
+
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <span class="text-amber-400 text-xs font-bold uppercase tracking-widest block mb-1">Featured Masterpiece</span>
+                                <h3 class="text-2xl font-bold text-white">Cheese Chicken Kottu</h3>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-amber-300 font-display text-2xl">LKR 1,850</span>
+                                    <button onclick="openCustomizer('chicken')" class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-extrabold px-4 py-2 rounded-lg transition-all duration-200">
+                                        Customize & Order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-[#0e0e14] relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+                    Our Specialized Menu
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-display text-white">
+                    THE SIGNATURE <span class="text-amber-400">TRIO</span>
+                </h2>
+                <p class="text-gray-400 text-base">
+                    We focus exclusively on three perfected recipes. Zero clutter. Pure culinary mastery with extra cheese overload.
+                </p>
+            </div>
+
+            <!-- The 3 Exclusive Menu Items Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Menu Item 1: Cheese Chicken Kottu -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-gray-800 hover:border-amber-500/50 transition-all duration-300 flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10" id="itemCard-chicken">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Cheese Chicken Kottu" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#13131c] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 bg-amber-500 text-black text-xs font-extrabold uppercase px-3 py-1 rounded-full">
+                            🔥 Bestseller
+                        </span>
+                        <div class="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-lg border border-amber-500/30 text-xs text-amber-300 flex items-center gap-1">
+                            <i class="fa-solid fa-pepper-hot text-red-500"></i> Customizable Spice
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">Cheese Chicken Kottu</h3>
+                                <span class="text-amber-400 font-display text-2xl">LKR 1,850</span>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Tender spiced boneless chicken strips tossed with hand-shredded hot paratha, crisp farm vegetables, curry leaves, and submerged in molten cheddar & mozzarella.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-cheese text-amber-400"></i> Double Melt Standard
+                            </span>
+                            <button onclick="openCustomizer('chicken')" class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+                                <span>Order Now</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 2: Cheese Fish Kottu -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-gray-800 hover:border-amber-500/50 transition-all duration-300 flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10" id="itemCard-fish">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Cheese Fish Kottu" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#13131c] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 bg-sky-500 text-black text-xs font-extrabold uppercase px-3 py-1 rounded-full">
+                            🐟 Chef's Special
+                        </span>
+                        <div class="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-lg border border-amber-500/30 text-xs text-amber-300 flex items-center gap-1">
+                            <i class="fa-solid fa-pepper-hot text-red-500"></i> Chili Garlic Rub
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">Cheese Fish Kottu</h3>
+                                <span class="text-amber-400 font-display text-2xl">LKR 1,950</span>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Fresh seer fish chunks wok-seared with crushed garlic, roasted black pepper sauce, onions, crispy roti, drowned under a blanket of rich bubbling toasted cheese glaze.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-cheese text-amber-400"></i> Creamy Glaze
+                            </span>
+                            <button onclick="openCustomizer('fish')" class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+                                <span>Order Now</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 3: Cheese Vegetable Kottu -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-gray-800 hover:border-amber-500/50 transition-all duration-300 flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10" id="itemCard-veg">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Cheese Vegetable Kottu" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#13131c] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 bg-emerald-500 text-black text-xs font-extrabold uppercase px-3 py-1 rounded-full">
+                            🌱 Fresh & Creamy
+                        </span>
+                        <div class="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-lg border border-amber-500/30 text-xs text-amber-300 flex items-center gap-1">
+                            <i class="fa-solid fa-leaf text-emerald-400"></i> Veggie Delight
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">Cheese Veggie Kottu</h3>
+                                <span class="text-amber-400 font-display text-2xl">LKR 1,450</span>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Crunchy garden bell peppers, carrots, sweet cabbage, chopped roti, simmered in aromatic spices and blanketed with a thick layer of stringy melted cheese.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-cheese text-amber-400"></i> Stringy Cheese Pull
+                            </span>
+                            <button onclick="openCustomizer('veg')" class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+                                <span>Order Now</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Kottu Customizer Modal -->
+    <div id="customizerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden transition-opacity duration-300">
+        <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto border border-amber-500/40 relative shadow-2xl">
+            
+            <!-- Close Button -->
+            <button onclick="closeCustomizer()" class="absolute top-5 right-5 text-gray-400 hover:text-white bg-gray-800/60 p-2 rounded-full transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="mb-6">
+                <span class="text-amber-400 text-xs font-bold uppercase tracking-widest">Customize Your Sizzle</span>
+                <h3 id="modalItemTitle" class="text-2xl font-bold text-white mt-1">Cheese Chicken Kottu</h3>
+                <p id="modalItemBasePrice" class="text-amber-300 font-display text-xl mt-1">Base Price: LKR 1,850</p>
+            </div>
+
+            <form id="customizerForm" onsubmit="handleAddToCart(event)" class="space-y-6">
+                <input type="hidden" id="modalItemId" value="">
+
+                <!-- Spice Level Selector -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-200 mb-2">Select Spice Level 🌶️</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="spiceLevel" value="Mild" class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-gray-800 border border-gray-700 peer-checked:border-amber-400 peer-checked:bg-amber-500/20 peer-checked:text-amber-300 text-xs font-medium transition-all">
+                                Mild 🌶️
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="spiceLevel" value="Medium Hot" checked class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-gray-800 border border-gray-700 peer-checked:border-amber-400 peer-checked:bg-amber-500/20 peer-checked:text-amber-300 text-xs font-medium transition-all">
+                                Medium 🌶️🌶️
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="spiceLevel" value="Sri Lankan Spicy" class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-gray-800 border border-gray-700 peer-checked:border-amber-400 peer-checked:bg-amber-500/20 peer-checked:text-amber-300 text-xs font-medium transition-all">
+                                Hot 🌶️🌶️🌶️
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="spiceLevel" value="Extra Flame" class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-gray-800 border border-gray-700 peer-checked:border-amber-400 peer-checked:bg-amber-500/20 peer-checked:text-amber-300 text-xs font-medium transition-all">
+                                Flame 🌶️🔥
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Cheese Level Options -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-200 mb-2">Cheese Melt Level 🧀</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center justify-between p-3 rounded-xl bg-gray-800/80 border border-gray-700 cursor-pointer hover:border-amber-500/50">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="cheeseLevel" value="Standard Melt" data-price="0" checked class="text-amber-500 focus:ring-amber-500">
+                                <span class="text-sm font-medium text-gray-200">Signature Cheese Melt</span>
+                            </div>
+                            <span class="text-xs text-gray-400">Included</span>
+                        </label>
+                        <label class="flex items-center justify-between p-3 rounded-xl bg-gray-800/80 border border-gray-700 cursor-pointer hover:border-amber-500/50">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="cheeseLevel" value="Double Cheese Melt" data-price="350" class="text-amber-500 focus:ring-amber-500">
+                                <span class="text-sm font-medium text-gray-200">Double Layer Cheese (+LKR 350)</span>
+                            </div>
+                            <span class="text-xs text-amber-400 font-bold">+LKR 350</span>
+                        </label>
+                        <label class="flex items-center justify-between p-3 rounded-xl bg-gray-800/80 border border-gray-700 cursor-pointer hover:border-amber-500/50">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="cheeseLevel" value="Molten Cheese Volcano" data-price="600" class="text-amber-500 focus:ring-amber-500">
+                                <span class="text-sm font-medium text-amber-300 font-semibold">Cheese Volcano Overload (+LKR 600)</span>
+                            </div>
+                            <span class="text-xs text-amber-400 font-bold">+LKR 600</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Sri Lankan Add-ons -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-200 mb-2">Extra Add-ons (Optional)</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-gray-800/50 border border-gray-800 cursor-pointer">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="addon" value="Crispy Fried Egg" data-price="120" class="rounded text-amber-500">
+                                <span class="text-xs text-gray-300">Fried Bullseye Egg</span>
+                            </div>
+                            <span class="text-xs text-gray-400">+LKR 120</span>
+                        </label>
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-gray-800/50 border border-gray-800 cursor-pointer">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="addon" value="Roast Paan Crust Sides" data-price="200" class="rounded text-amber-500">
+                                <span class="text-xs text-gray-300">Butter Roast Paan Crust</span>
+                            </div>
+                            <span class="text-xs text-gray-400">+LKR 200</span>
+                        </label>
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-gray-800/50 border border-gray-800 cursor-pointer">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="addon" value="Extra Thick Gravy Cup" data-price="150" class="rounded text-amber-500">
+                                <span class="text-xs text-gray-300">Extra Thick Spicy Curry Gravy</span>
+                            </div>
+                            <span class="text-xs text-gray-400">+LKR 150</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Quantity selector -->
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-sm font-semibold text-gray-200">Quantity</span>
+                    <div class="flex items-center gap-3 bg-gray-800 rounded-xl p-1 border border-gray-700">
+                        <button type="button" onclick="updateModalQty(-1)" class="w-8 h-8 rounded-lg bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center font-bold">-</button>
+                        <span id="modalQtyDisplay" class="font-bold text-amber-400 w-6 text-center">1</span>
+                        <button type="button" onclick="updateModalQty(1)" class="w-8 h-8 rounded-lg bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center font-bold">+</button>
+                    </div>
+                </div>
+
+                <!-- Add to order button -->
+                <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-base tracking-wider transition-all duration-300 shadow-lg shadow-amber-500/20">
+                    ADD TO ORDER • <span id="modalTotalPrice">LKR 1,850</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Craft Story & Sizzle Section -->
+    <section id="about" class="py-24 bg-brand-darkBg relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase">
+                        The Kottu Kade Philosophy
+                    </div>
+                    <h2 class="text-4xl sm:text-5xl font-display text-white leading-tight">
+                        WHY WE ONLY SERVE <span class="text-amber-400">3 KOTTUS</span>
+                    </h2>
+                    <p class="text-gray-300 text-base leading-relaxed">
+                        At <strong class="text-amber-400">KOTTU KADE</strong>, we refused to create a 50-page menu. Instead, we spent years perfecting the exact heat on the iron grid, the ideal spice roast ratio, and the ultimate mozzarella blend that creates the iconic stringy cheese pull.
+                    </p>
+                    
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                                <i class="fa-solid fa-fire-burner"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">High-Heat Chopped Fresh</h4>
+                                <p class="text-gray-400 text-sm">Every plate is freshly chopped to order using twin blades on custom-forged steel plates.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                                <i class="fa-solid fa-cheese"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">100% Real Dairy Cheese</h4>
+                                <p class="text-gray-400 text-sm">No artificial cheese sauces. Only premium block mozzarella & golden cheddar baked directly into the hot roti grid.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Collage -->
+                <div class="relative">
+                    <div class="glass-card p-6 rounded-3xl border border-amber-500/30 space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                            <span class="text-white font-bold"><i class="fa-solid fa-volume-high text-amber-400 mr-2"></i> Sound of Sri Lankan Streets</span>
+                            <span class="text-xs text-amber-400">Interactive Synth</span>
+                        </div>
+                        <p class="text-sm text-gray-400">
+                            Experience the rhythm of our kitchen! Click below to hear our custom Web Audio API rhythmic kottu chopping sound simulation.
+                        </p>
+                        <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 text-center space-y-4">
+                            <div class="flex justify-center items-center gap-2 h-12">
+                                <div class="w-2 bg-amber-500 rounded-full h-4 transition-all" id="bar1"></div>
+                                <div class="w-2 bg-amber-400 rounded-full h-8 transition-all" id="bar2"></div>
+                                <div class="w-2 bg-yellow-500 rounded-full h-12 transition-all" id="bar3"></div>
+                                <div class="w-2 bg-amber-400 rounded-full h-6 transition-all" id="bar4"></div>
+                                <div class="w-2 bg-amber-500 rounded-full h-3 transition-all" id="bar5"></div>
+                            </div>
+                            <button onclick="playChoppingBeat()" class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm transition-all duration-200">
+                                <i class="fa-solid fa-drumstick-bite mr-2"></i> Play Chopping Rhythm 🎶
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-24 bg-[#0e0e14] relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-amber-400 text-xs font-bold uppercase tracking-wider">What Foodies Say</span>
+                <h2 class="text-4xl font-display text-white">THE CHEESE PULL <span class="text-amber-400">VERDICT</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="glass-card p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed italic">
+                        "Mage ammoo! The Cheese Chicken Kottu with Volcano melt is next level. Fresh chicken, proper Sri Lankan spice heat, and the cheese pull is crazy!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">K</div>
+                        <div>
+                            <div class="text-white font-bold text-sm">Kasun Perera</div>
+                            <div class="text-xs text-gray-500">Verified Foodie</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="glass-card p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed italic">
+                        " Cheese Fish Kottu eka mara amuthu taste ekak. Seer fish chunks pepper rub eka ekka melt wunu cheese godama sahena supiri!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">D</div>
+                        <div>
+                            <div class="text-white font-bold text-sm">Dilini Fernando</div>
+                            <div class="text-xs text-gray-500">Colombo Gourmet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="glass-card p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed italic">
+                        "Ordered via WhatsApp and got it sizzling hot within 25 minutes! Cheese Veggie Kottu eka tharam godak cheese thiyena veg dish ekak kaalama na."
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">S</div>
+                        <div>
+                            <div class="text-white font-bold text-sm">Sahan Silva</div>
+                            <div class="text-xs text-gray-500">Kottu Addict</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Opening Hours Section -->
+    <section id="location" class="py-24 bg-brand-darkBg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 border border-amber-500/30">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-6 space-y-6">
+                        <span class="text-amber-400 text-xs font-bold uppercase tracking-wider">Hot Spot Location</span>
+                        <h2 class="text-4xl font-display text-white">COME GET IT <span class="text-amber-400">FRESH</span></h2>
+                        
+                        <div class="space-y-4 text-gray-300">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-location-dot text-amber-400 text-xl w-6"></i>
+                                <span>124/A, Galle Road, Colombo 03, Sri Lanka</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-clock text-amber-400 text-xl w-6"></i>
+                                <span>Open Daily: 5:00 PM – 1:00 AM (Late Night Sizzle)</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-phone text-amber-400 text-xl w-6"></i>
+                                <span>Hotline: +94 77 123 4567</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-brands fa-whatsapp text-emerald-400 text-xl w-6"></i>
+                                <span>WhatsApp Orders: +94 77 123 4567</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex flex-wrap gap-3">
+                            <span class="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 text-xs"><i class="fa-solid fa-motorcycle text-amber-400 mr-1.5"></i> Fast Delivery</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 text-xs"><i class="fa-solid fa-bag-shopping text-amber-400 mr-1.5"></i> Takeaway</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 text-xs"><i class="fa-solid fa-utensils text-amber-400 mr-1.5"></i> Outdoor Seating</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Map Card Mockup -->
+                    <div class="lg:col-span-6">
+                        <div class="relative h-72 sm:h-80 rounded-2xl overflow-hidden bg-gray-900 border border-gray-800 flex items-center justify-center text-center p-6 group">
+                            <div class="absolute inset-0 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                            
+                            <div class="relative z-10 space-y-3">
+                                <div class="w-16 h-16 rounded-full bg-amber-500/20 border-2 border-amber-400 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-lg shadow-amber-500/30 animate-bounce">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">KOTTU KADE COLOMBO</h4>
+                                <p class="text-xs text-gray-400 max-w-xs mx-auto">Galle Road Spot • Sizzling everyday from 5 PM onwards</p>
+                                <a href="https://maps.google.com" target="_blank" class="inline-block px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs transition-all shadow-md">
+                                    Open Google Maps <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
+        
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md glass-card bg-brand-darkBg/95 border-l border-amber-500/30 flex flex-col justify-between shadow-2xl">
+                
+                <!-- Drawer Header -->
+                <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Your Order Basket</h3>
+                            <p class="text-xs text-gray-400">KOTTU KADE Direct Delivery</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Items Container -->
+                <div id="cartItemsContainer" class="p-6 overflow-y-auto flex-1 space-y-4">
+                    <!-- Dynamic cart items will render here -->
+                    <div id="emptyCartMessage" class="text-center py-16 space-y-3">
+                        <i class="fa-solid fa-utensils text-4xl text-gray-600"></i>
+                        <p class="text-gray-400 text-sm">Your basket is empty!</p>
+                        <button onclick="toggleCartDrawer()" class="px-4 py-2 bg-amber-500 text-black font-bold text-xs rounded-xl">
+                            Explore Menu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cart Footer & Checkout -->
+                <div class="p-6 border-t border-gray-800 space-y-4 bg-black/40">
+                    
+                    <!-- Order Details Inputs -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Your Name</label>
+                            <input type="text" id="customerName" placeholder="e.g. Kasun Silva" class="w-full px-3 py-2 rounded-xl bg-gray-900 border border-gray-700 text-sm text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Delivery Address or Pickup</label>
+                            <input type="text" id="customerAddress" placeholder="e.g. No 45, Kollupitiya / Pickup" class="w-full px-3 py-2 rounded-xl bg-gray-900 border border-gray-700 text-sm text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 pt-2 border-t border-gray-800">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Subtotal</span>
+                            <span id="cartSubtotalDisplay">LKR 0</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Estimated Delivery</span>
+                            <span>LKR 250</span>
+                        </div>
+                        <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-gray-800">
+                            <span>Total Payable</span>
+                            <span id="cartTotalDisplay" class="text-amber-400 font-display text-2xl">LKR 250</span>
+                        </div>
+                    </div>
+
+                    <!-- Direct WhatsApp Order CTA -->
+                    <button onclick="submitOrderToWhatsApp()" class="w-full py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20 active:scale-98">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>ORDER VIA WHATSAPP</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-gray-800 py-12 text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-black font-display text-xl font-bold">
+                        KK
+                    </div>
+                    <div>
+                        <span class="font-display text-xl text-white tracking-wider block">KOTTU KADE</span>
+                        <span class="text-xs text-gray-500">© 2026 KOTTU KADE Sri Lanka. All rights reserved.</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 text-gray-400">
+                    <a href="#" class="hover:text-amber-400"><i class="fa-brands fa-facebook text-lg"></i></a>
+                    <a href="#" class="hover:text-amber-400"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    <a href="#" class="hover:text-amber-400"><i class="fa-brands fa-tiktok text-lg"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Menu Data Store (Exclusive Trio)
+        const MENU_DATA = {
+            chicken: {
+                id: 'chicken',
+                title: 'Cheese Chicken Kottu',
+                basePrice: 1850,
+                img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1000&auto=format&fit=crop'
+            },
+            fish: {
+                id: 'fish',
+                title: 'Cheese Fish Kottu',
+                basePrice: 1950,
+                img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=1000&auto=format&fit=crop'
+            },
+            veg: {
+                id: 'veg',
+                title: 'Cheese Vegetable Kottu',
+                basePrice: 1450,
+                img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop'
+            }
+        };
+
+        // State Store
+        let cart = [];
+        let modalState = {
+            itemKey: null,
+            quantity: 1
+        };
+
+        // Web Audio API Synthesizer for Sizzle/Chopping Sound
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let soundTimer = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playChoppingBeat() {
+            const ctx = getAudioContext();
+            
+            // Generate rhythmic metallic chop sound
+            let tempo = 120;
+            let count = 0;
+
+            function triggerChop(time) {
+                // Oscillator for metallic blade hit
+                let osc = ctx.createOscillator();
+                let gain = ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180 + Math.random() * 60, time);
+                osc.frequency.exponentialRampToValueAtTime(40, time + 0.08);
+
+                gain.gain.setValueAtTime(0.4, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(time);
+                osc.stop(time + 0.09);
+
+                // Highpass noise for oil sizzle effect
+                let bufferSize = ctx.sampleRate * 0.05;
+                let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                let data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                let noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                let filter = ctx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 3000;
+
+                let noiseGain = ctx.createGain();
+                noiseGain.gain.setValueAtTime(0.15, time);
+                noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+
+                noise.connect(filter);
+                filter.connect(noiseGain);
+                noiseGain.connect(ctx.destination);
+
+                noise.start(time);
+                noise.stop(time + 0.06);
+            }
+
+            let now = ctx.currentTime;
+            for (let i = 0; i < 8; i++) {
+                triggerChop(now + i * 0.18);
+            }
+
+            showToast("🔊 Sizzling Kottu Blades Sounding!");
+        }
+
+        function toggleSizzleAudio() {
+            playChoppingBeat();
+            const btnText = document.getElementById('soundBtnText');
+            btnText.innerText = "Sizzling Hot! 🔥";
+            setTimeout(() => {
+                btnText.innerText = "Hear The Chopping Sound 🔊";
+            }, 2000);
+        }
+
+        // Customizer Modal Logic
+        function openCustomizer(itemKey) {
+            const item = MENU_DATA[itemKey];
+            if (!item) return;
+
+            modalState.itemKey = itemKey;
+            modalState.quantity = 1;
+
+            document.getElementById('modalItemId').value = itemKey;
+            document.getElementById('modalItemTitle').innerText = item.title;
+            document.getElementById('modalItemBasePrice').innerText = `Base Price: LKR ${item.basePrice.toLocaleString()}`;
+            document.getElementById('modalQtyDisplay').innerText = '1';
+
+            // Reset form controls
+            document.getElementById('customizerForm').reset();
+            
+            updateModalPrice();
+
+            const modal = document.getElementById('customizerModal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeCustomizer() {
+            document.getElementById('customizerModal').classList.add('hidden');
+        }
+
+        function updateModalQty(change) {
+            modalState.quantity = Math.max(1, modalState.quantity + change);
+            document.getElementById('modalQtyDisplay').innerText = modalState.quantity;
+            updateModalPrice();
+        }
+
+        function calculateModalSingleUnitPrice() {
+            const item = MENU_DATA[modalState.itemKey];
+            if (!item) return 0;
+
+            let price = item.basePrice;
+
+            // Cheese price option
+            const cheeseEl = document.querySelector('input[name="cheeseLevel"]:checked');
+            if (cheeseEl) {
+                price += parseInt(cheeseEl.getAttribute('data-price') || '0', 10);
+            }
+
+            // Add-ons price
+            const addonEls = document.querySelectorAll('input[name="addon"]:checked');
+            addonEls.forEach(el => {
+                price += parseInt(el.getAttribute('data-price') || '0', 10);
+            });
+
+            return price;
+        }
+
+        function updateModalPrice() {
+            const unitPrice = calculateModalSingleUnitPrice();
+            const totalPrice = unitPrice * modalState.quantity;
+            document.getElementById('modalTotalPrice').innerText = `LKR ${totalPrice.toLocaleString()}`;
+        }
+
+        // Attach event listeners to modal form inputs for real-time recalculation
+        document.getElementById('customizerForm').addEventListener('change', updateModalPrice);
+
+        function handleAddToCart(e) {
+            e.preventDefault();
+            const item = MENU_DATA[modalState.itemKey];
+            if (!item) return;
+
+            const spiceLevel = document.querySelector('input[name="spiceLevel"]:checked').value;
+            const cheeseEl = document.querySelector('input[name="cheeseLevel"]:checked');
+            const cheeseLevel = cheeseEl ? cheeseEl.value : 'Standard Melt';
+
+            const addonEls = document.querySelectorAll('input[name="addon"]:checked');
+            const addons = Array.from(addonEls).map(el => el.value);
+
+            const unitPrice = calculateModalSingleUnitPrice();
+
+            const cartItem = {
+                cartId: Date.now(),
+                key: modalState.itemKey,
+                title: item.title,
+                spiceLevel: spiceLevel,
+                cheeseLevel: cheeseLevel,
+                addons: addons,
+                quantity: modalState.quantity,
+                unitPrice: unitPrice,
+                totalPrice: unitPrice * modalState.quantity
+            };
+
+            cart.push(cartItem);
+            updateCartUI();
+            closeCustomizer();
+            toggleCartDrawer();
+
+            // Trigger celebratory confetti
+            if (window.confetti) {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            }
+
+            showToast(`Added ${cartItem.quantity}x ${item.title} to order!`);
+        }
+
+        // Cart Drawer Logic
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const badge = document.getElementById('cartBadgeCount');
+            const subtotalEl = document.getElementById('cartSubtotalDisplay');
+            const totalEl = document.getElementById('cartTotalDisplay');
+
+            const totalItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+            badge.innerText = totalItemsCount;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div id="emptyCartMessage" class="text-center py-16 space-y-3">
+                        <i class="fa-solid fa-utensils text-4xl text-gray-600"></i>
+                        <p class="text-gray-400 text-sm">Your basket is empty!</p>
+                        <button onclick="toggleCartDrawer()" class="px-4 py-2 bg-amber-500 text-black font-bold text-xs rounded-xl">
+                            Explore Menu
+                        </button>
+                    </div>
+                `;
+                subtotalEl.innerText = 'LKR 0';
+                totalEl.innerText = 'LKR 250';
+                return;
+            }
+
+            let subtotal = 0;
+            let html = '';
+
+            cart.forEach(item => {
+                subtotal += item.totalPrice;
+                html += `
+                    <div class="glass-card p-4 rounded-xl border border-gray-800 space-y-2 relative">
+                        <button onclick="removeFromCart(${item.cartId})" class="absolute top-3 right-3 text-gray-500 hover:text-red-400 text-xs">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        
+                        <div class="pr-6">
+                            <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                            <div class="text-xs text-amber-400 font-semibold mt-0.5">LKR ${item.unitPrice.toLocaleString()} × ${item.quantity}</div>
+                        </div>
+
+                        <div class="text-[11px] text-gray-400 space-y-0.5 border-t border-gray-800/60 pt-2">
+                            <div><i class="fa-solid fa-pepper-hot text-red-400 mr-1"></i> Spice: ${item.spiceLevel}</div>
+                            <div><i class="fa-solid fa-cheese text-amber-400 mr-1"></i> Cheese: ${item.cheeseLevel}</div>
+                            ${item.addons.length > 0 ? `<div><i class="fa-solid fa-plus text-emerald-400 mr-1"></i> Add-ons: ${item.addons.join(', ')}</div>` : ''}
+                        </div>
+
+                        <div class="flex justify-between items-center pt-1 border-t border-gray-800/40">
+                            <span class="text-xs text-gray-400">Item Total</span>
+                            <span class="text-sm font-bold text-amber-300">LKR ${item.totalPrice.toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            const deliveryFee = 250;
+            subtotalEl.innerText = `LKR ${subtotal.toLocaleString()}`;
+            totalEl.innerText = `LKR ${(subtotal + deliveryFee).toLocaleString()}`;
+        }
+
+        // Direct WhatsApp Message Formatter
+        function submitOrderToWhatsApp() {
+            if (cart.length === 0) {
+                showToast("Your basket is empty! Add a Kottu first.");
+                return;
+            }
+
+            const name = document.getElementById('customerName').value.trim() || 'Valued Customer';
+            const address = document.getElementById('customerAddress').value.trim() || 'Pickup at Store';
+
+            let message = `*NEW ORDER - KOTTU KADE* 🧀🔥\n`;
+            message += `==============================\n`;
+            message += `*Customer:* ${name}\n`;
+            message += `*Address/Method:* ${address}\n`;
+            message += `==============================\n\n`;
+
+            let subtotal = 0;
+            cart.forEach((item, index) => {
+                subtotal += item.totalPrice;
+                message += `*${index + 1}. ${item.title}* (x${item.quantity})\n`;
+                message += `   • Spice: ${item.spiceLevel}\n`;
+                message += `   • Cheese: ${item.cheeseLevel}\n`;
+                if (item.addons.length > 0) {
+                    message += `   • Add-ons: ${item.addons.join(', ')}\n`;
+                }
+                message += `   • Price: LKR ${item.totalPrice.toLocaleString()}\n\n`;
+            });
+
+            const deliveryFee = 250;
+            const grandTotal = subtotal + deliveryFee;
+
+            message += `==============================\n`;
+            message += `*Subtotal:* LKR ${subtotal.toLocaleString()}\n`;
+            message += `*Delivery Fee:* LKR ${deliveryFee}\n`;
+            message += `*TOTAL PAYABLE:* LKR ${grandTotal.toLocaleString()}\n`;
+            message += `==============================\n`;
+            message += `Please confirm order preparation! 🇱🇰🔥`;
+
+            const phone = "94771234567"; // KOTTU KADE hotline
+            const encodedMsg = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+
+            window.open(waUrl, '_blank');
+        }
+
+        // Custom Toast Notification System
+        function showToast(text) {
+            const existing = document.getElementById('appToast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'appToast';
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass-card bg-amber-500 text-black font-extrabold px-6 py-3 rounded-full text-xs shadow-2xl flex items-center gap-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-fire text-black"></i> ${text}`;
+
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Canvas Particle Effect for Sizzling Flame Sparks
+        const canvas = document.getElementById('sparksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Spark {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 50;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.opacity = Math.random() * 0.8 + 0.2;
+                this.color = Math.random() > 0.4 ? '#F59E0B' : '#EF4444';
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.opacity -= 0.003;
+                if (this.opacity <= 0 || this.y < 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        const sparkParticles = Array.from({ length: 45 }, () => new Spark());
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sparkParticles.forEach(spark => {
+                spark.update();
+                spark.draw();
+            });
+            requestAnimationFrame(animateSparks);
+        }
+
+        // GSAP Initialization on Load
+        window.onload = function () {
+            animateSparks();
+
+            // Register ScrollTrigger
+            if (window.gsap) {
+                gsap.from("#heroTextContainer", {
+                    duration: 1.2,
+                    y: 40,
+                    opacity: 0,
+                    ease: "power3.out"
+                });
+
+                gsap.from("#heroImageCard", {
+                    duration: 1.2,
+                    scale: 0.9,
+                    opacity: 0,
+                    delay: 0.2,
+                    ease: "power3.out"
+                });
+            }
+        };
+    </script>
+</body>
+</html>
